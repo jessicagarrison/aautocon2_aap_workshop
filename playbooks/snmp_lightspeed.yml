@@ -1,0 +1,13 @@
+---
+- name: Gather SNMP configuration from Cisco IOS
+  gather_facts: false
+  hosts: cisco
+  tasks:
+    - name: Gather SNMP configuration
+      cisco.ios.ios_snmp_server:
+        state: gathered
+      register: snmp_config
+    - name: Save SNMP configuration to file
+      ansible.builtin.copy:
+        content: "{{ snmp_config | to_nice_yaml }}"
+        dest: /home/ano-user/my_snmp_config.yml
